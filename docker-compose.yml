@@ -1,0 +1,28 @@
+version: '3.5'
+
+services:
+  db:
+    container_name: shorten_url_db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - 5432:5432
+
+  web:
+    container_name: shorten_url_service
+    build: .
+    command: bash -c "
+        rm -f tmp/pids/server.pid
+        && bundle exec rake db:create db:migrate
+        && sleep infinity
+      "
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=shorten_url_db

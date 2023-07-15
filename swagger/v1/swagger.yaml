@@ -1,0 +1,69 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/shorten":
+    post:
+      summary: create shorten url
+      tags:
+      - Shorten Url
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        nullable: false
+                      type:
+                        type: string
+                        nullable: false
+                      attributes:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                            nullable: false
+                          url:
+                            type: string
+                            nullable: false
+                  links:
+                    type: object
+                    properties:
+                      short_url:
+                        type: string
+                        nullable: false
+        '422':
+          description: unprocessable entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  nullable: false
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
